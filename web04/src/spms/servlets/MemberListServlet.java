@@ -34,8 +34,11 @@ public class MemberListServlet extends GenericServlet {
 			out.println("<body><h1>회원목록</h1>");
 			out.println("<p><a href='add'>신규 회원</a></p>");
 			while (rs.next()) {
-				out.println(rs.getInt("mno") + "," + rs.getString("mname") + "," + rs.getString("email") + ","
-						+ rs.getDate("cre_date") + "<br>");
+				out.println(rs.getInt("mno") + "," + 
+							"<a href='update?no="+ rs.getInt("mno") + "'>" +	
+							rs.getString("mname") + "</a>," + 
+							rs.getString("email") + ","	+ 
+							rs.getDate("cre_date") + "<br>");
 			}
 			out.println("</body></html>");
 		} catch (Exception e) {
