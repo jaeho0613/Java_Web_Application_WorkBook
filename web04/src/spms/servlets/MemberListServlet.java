@@ -29,10 +29,10 @@ public class MemberListServlet extends GenericServlet {
 			// MySQL 서버에 연결
 			// - 연결 성공시 Connection 객체 반환
 			conn = DriverManager.getConnection("jdbc:mysql://localhost/web04", "root", "362514");
-			
+
 			// SQL 문을 실행할 객체
 			stmt = conn.createStatement();
-			
+
 			// SQL 문을 서버에 보냄
 			rs = stmt.executeQuery("select mno, mname, email, cre_date from members order by mno asc");
 
@@ -42,8 +42,9 @@ public class MemberListServlet extends GenericServlet {
 			out.println("<body><h1>회원목록</h1>");
 			out.println("<p><a href='add'>신규 회원</a></p>");
 			while (rs.next()) {
-				out.println(rs.getInt("mno") + " ," + rs.getString("mname") + " ," + rs.getString("email") + " ,"
-						+ rs.getDate("cre_date") + " <br>");
+				out.println(
+						rs.getInt("mno") + "," + "<a href='update?no=" + rs.getInt("mno") + "'>" + rs.getString("mname")
+								+ "</a>," + rs.getString("email") + "," + rs.getDate("cre_date") + " <br>");
 			}
 			out.println("</body></html>");
 		} catch (Exception e) {
