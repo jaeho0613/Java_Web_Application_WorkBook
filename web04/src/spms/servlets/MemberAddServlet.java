@@ -47,8 +47,18 @@ public class MemberAddServlet extends HttpServlet {
 
 			resp.setContentType("text/html; charset=utf-8");
 			PrintWriter out = resp.getWriter();
-			out.println("<html>\r\n" + "  <head>\r\n" + "    <title>회원등록결과</title>\r\n" + "  </head>\r\n"
-					+ "  <body>\r\n" + "    <p>등록 성공입니다!</p>\r\n" + "  </body>\r\n" + "</html>\r\n" + "");
+			out.println("<html>\r\n" 
+			+ "  <head>\r\n" 
+			+ "    <title>회원등록결과</title>\r\n"
+			+ "<meta http-equiv='Refresh' content='1; url=list'>"
+			+ "  </head>\r\n"
+			+ "  <body>\r\n" 
+			+ "    <p>등록 성공입니다!</p>\r\n" 
+			+ "  </body>\r\n" 
+			+ "</html>\r\n" + "");
+			
+			// 리프래시 정보를 응답 헤더에 추가
+			//resp.addHeader("Refresh", "1;url=list");
 		} catch (Exception e) {
 			throw new ServletException(e);
 		} finally {
