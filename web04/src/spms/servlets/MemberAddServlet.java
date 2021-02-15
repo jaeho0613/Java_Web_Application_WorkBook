@@ -1,0 +1,67 @@
+package spms.servlets;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+@SuppressWarnings("serial")
+@WebServlet("/member/add")
+public class MemberAddServlet extends HttpServlet {
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		resp.setContentType("text/html; charset=UTF-8");
+		PrintWriter out = resp.getWriter();
+		out.println("<html>\r\n" + "  <head>\r\n" + "    <title>회원 등록</title>\r\n" + "  </head>\r\n" + "  <body>\r\n"
+				+ "    <h1>회원 등록</h1>\r\n" + "    <form action=\"add\" method=\"post\" accept-charset=\"utf-8\">\r\n"
+				+ "      이름: <input type=\"text\" name=\"name\" /><br />\r\n"
+				+ "      이메일: <input type=\"text\" name=\"email\" /><br />\r\n"
+				+ "      암호: <input type=\"password\" name=\"password\" /><br />\r\n"
+				+ "      <input type=\"submit\" value=\"추가\" />\r\n" + "      <input type=\"reset\" value=\"취소\" />\r\n"
+				+ "    </form>\r\n" + "  </body>\r\n" + "</html>");
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		req.setCharacterEncoding("utf-8");
+		
+		Connection conn = null;
+		PreparedStatement stmt = null;
+
+		try {
+			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+			conn = DriverManager.getConnection("jdbc:mysql://localhost/web04", "root", "362514");
+			stmt = conn.prepareStatement(
+					"insert into members(email, pwd, mname, cre_date, mod_date) values(?,?,?,now(),now())");
+			stmt.setString(1, req.getParameter("email"));
+			stmt.setString(2, req.getParameter("password"));
+			stmt.setString(3, req.getParameter("name"));
+			stmt.executeUpdate();
+
+			resp.setContentType("text/html; charset=utf-8");
+			PrintWriter out = resp.getWriter();
+			out.println("<html>\r\n" + "  <head>\r\n" + "    <title>회원등록결과</title>\r\n" + "  </head>\r\n"
+					+ "  <body>\r\n" + "    <p>등록 성공입니다!</p>\r\n" + "  </body>\r\n" + "</html>\r\n" + "");
+		} catch (Exception e) {
+			throw new ServletException(e);
+		} finally {
+			try {
+				if (stmt != null)
+					stmt.close();
+			} catch (Exception e) {
+			}
+			try {
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+	}
+}
