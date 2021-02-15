@@ -8,18 +8,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @SuppressWarnings("serial")
-@WebServlet(urlPatterns = { "/member/update" }, initParams = {
-		@WebInitParam(name = "driver", value = "com.mysql.jdbc.Driver"),
-		@WebInitParam(name = "url", value = "jdbc:mysql://localhost.web04"),
-		@WebInitParam(name = "username", value = "root"), @WebInitParam(name = "password", value = "362514"), })
+@WebServlet("/member/update")
 public class MemberUpdateServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -28,9 +25,10 @@ public class MemberUpdateServlet extends HttpServlet {
 		ResultSet rs = null;
 
 		try {
-			Class.forName(this.getInitParameter("driver"));
-			conn = DriverManager.getConnection(this.getInitParameter("url"), this.getInitParameter("username"),
-					this.getInitParameter("password"));
+			ServletContext sc = this.getServletContext();
+			Class.forName(sc.getInitParameter("driver"));
+			conn = DriverManager.getConnection(sc.getInitParameter("url"), sc.getInitParameter("username"),
+					sc.getInitParameter("password"));
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(
 					"select mno, email, mname, cre_date from members where mno=" + req.getParameter("no"));
@@ -77,9 +75,10 @@ public class MemberUpdateServlet extends HttpServlet {
 		PreparedStatement stmt = null;
 
 		try {
-			Class.forName(this.getInitParameter("driver"));
-			conn = DriverManager.getConnection(this.getInitParameter("url"), this.getInitParameter("username"),
-					this.getInitParameter("password"));
+			ServletContext sc = this.getServletContext();
+			Class.forName(sc.getInitParameter("driver"));
+			conn = DriverManager.getConnection(sc.getInitParameter("url"), sc.getInitParameter("username"),
+					sc.getInitParameter("password"));
 
 			stmt = conn.prepareStatement("update members set email=?, mname=?, mod_date=now() where mno=?");
 			stmt.setString(1, req.getParameter("email"));

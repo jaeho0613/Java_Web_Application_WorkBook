@@ -1,4 +1,4 @@
--- drop database web04;
+drop database web04;
 create database web04;
 use web04;
 
