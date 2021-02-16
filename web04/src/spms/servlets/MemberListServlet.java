@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import javax.servlet.GenericServlet;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -23,12 +24,16 @@ public class MemberListServlet extends GenericServlet {
 		ResultSet rs = null;
 
 		try {
+			// 컨텍스트 초기화 변수
+			ServletContext sc = this.getServletContext();
+
 			// 설정한 드라이버 구현체 등록
-			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
+			Class.forName(sc.getInitParameter("driver"));
 
 			// MySQL 서버에 연결
 			// - 연결 성공시 Connection 객체 반환
-			conn = DriverManager.getConnection("jdbc:mysql://localhost/web04", "root", "362514");
+			conn = DriverManager.getConnection(sc.getInitParameter("url"), sc.getInitParameter("username"),
+					sc.getInitParameter("password"));
 
 			// SQL 문을 실행할 객체
 			stmt = conn.createStatement();
