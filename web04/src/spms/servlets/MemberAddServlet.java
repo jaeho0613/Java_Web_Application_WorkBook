@@ -31,7 +31,8 @@ public class MemberAddServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setCharacterEncoding("utf-8");
+		// CharacterEncodingFilter에서 처리
+		//req.setCharacterEncoding("utf-8");
 
 		Connection conn = null;
 		PreparedStatement stmt = null;
