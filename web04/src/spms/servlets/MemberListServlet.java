@@ -21,7 +21,8 @@ import javax.servlet.http.HttpServletResponse;
 public class MemberListServlet extends HttpServlet {
 
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -51,8 +52,13 @@ public class MemberListServlet extends HttpServlet {
 			out.println("<p><a href='add'>신규 회원</a></p>");
 			while (rs.next()) {
 				out.println(
-						rs.getInt("mno") + "," + "<a href='update?no=" + rs.getInt("mno") + "'>" + rs.getString("mname")
-								+ "</a>," + rs.getString("email") + "," + rs.getDate("cre_date") + " <br>");
+						rs.getInt("mno") + "," +
+						"<a href='update?no=" + rs.getInt("mno") + "'>" +
+						rs.getString("mname")
+						+ "</a>," + rs.getString("email") + "," +
+						rs.getDate("cre_date") + 
+						"<a href='delete?no=" + rs.getInt("mno") + "'> [삭제] </a>" +
+						" <br>");
 			}
 			out.println("</body></html>");
 		} catch (Exception e) {

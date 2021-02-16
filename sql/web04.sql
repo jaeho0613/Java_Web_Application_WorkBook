@@ -31,3 +31,6 @@ insert into members(email, pwd, mname, cre_date, mod_date) values('s5@testcom', 
 select mno, email, mname, cre_date
 from members
 order by mno asc;
+
+-- delete from members
+-- where mno = 1;
