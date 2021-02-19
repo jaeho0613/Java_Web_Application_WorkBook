@@ -39,10 +39,10 @@ public class MemberAddServlet extends HttpServlet {
 
 		try {
 			ServletContext sc = this.getServletContext();
-			Class.forName(sc.getInitParameter("driver"));
-
-			conn = DriverManager.getConnection(sc.getInitParameter("url"), sc.getInitParameter("username"),
-					sc.getInitParameter("password"));
+			
+			// AppInit Context에서 생성한 connection 객체
+			conn = (Connection) sc.getAttribute("conn");
+			
 			stmt = conn.prepareStatement(
 					"insert into members(email, pwd, mname, cre_date, mod_date) values(?,?,?,now(),now())");
 			stmt.setString(1, req.getParameter("email"));

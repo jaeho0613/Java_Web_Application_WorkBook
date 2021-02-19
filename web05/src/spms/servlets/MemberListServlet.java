@@ -37,13 +37,8 @@ public class MemberListServlet extends HttpServlet {
 			// 컨텍스트 초기화 변수
 			ServletContext sc = this.getServletContext();
 
-			// 설정한 드라이버 구현체 등록
-			Class.forName(sc.getInitParameter("driver"));
-
-			// MySQL 서버에 연결
-			// - 연결 성공시 Connection 객체 반환
-			conn = DriverManager.getConnection(sc.getInitParameter("url"), sc.getInitParameter("username"),
-					sc.getInitParameter("password"));
+			// AppInit Context에서 생성한 connection 객체
+			conn = (Connection) sc.getAttribute("conn");
 
 			// SQL 문을 실행할 객체
 			stmt = conn.createStatement();
@@ -57,8 +52,8 @@ public class MemberListServlet extends HttpServlet {
 			// 데이터베이스에서 회원 정보를 가져와 Member에 담는다.
 			// 그리고 Member객체를 ArrayList에 추가한다.
 			while (rs.next()) {
-				members.add(new Member(rs.getInt("mno"), rs.getString("email"), null,
-						rs.getString("mname"), rs.getDate("cre_date"), null));
+				members.add(new Member(rs.getInt("mno"), rs.getString("email"), null, rs.getString("mname"),
+						rs.getDate("cre_date"), null));
 			}
 
 			// request에 데이터 보관
@@ -86,13 +81,6 @@ public class MemberListServlet extends HttpServlet {
 			} catch (Exception e) {
 
 			}
-			try {
-				if (conn != null)
-					conn.close();
-			} catch (Exception e) {
-
-			}
 		}
-
 	}
 }

@@ -26,9 +26,10 @@ public class MemberUpdateServlet extends HttpServlet {
 
 		try {
 			ServletContext sc = this.getServletContext();
-			Class.forName(sc.getInitParameter("driver"));
-			conn = DriverManager.getConnection(sc.getInitParameter("url"), sc.getInitParameter("username"),
-					sc.getInitParameter("password"));
+
+			// AppInit Context에서 생성한 connection 객체
+			conn = (Connection) sc.getAttribute("conn");
+
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery(
 					"select mno, email, mname, cre_date from members where mno=" + req.getParameter("no"));
@@ -44,7 +45,8 @@ public class MemberUpdateServlet extends HttpServlet {
 			out.println("이메일: <input type='text' name='email' value='" + rs.getString("email") + "'><br>");
 			out.println("가입일: " + rs.getDate("cre_date") + "<br>");
 			out.println("<input type='submit' value='저장'>");
-			out.println("<input type='button' value='삭제'" + " onclick='location.href=\"delete?no=" + req.getParameter("no") +"\"'>");
+			out.println("<input type='button' value='삭제'" + " onclick='location.href=\"delete?no="
+					+ req.getParameter("no") + "\"'>");
 			out.println("<input type='button' value='취소'" + " onclick='location.href=\"list\"'>");
 			out.println("</form></body></html>");
 		} catch (Exception e) {
@@ -77,10 +79,10 @@ public class MemberUpdateServlet extends HttpServlet {
 
 		try {
 			ServletContext sc = this.getServletContext();
-			Class.forName(sc.getInitParameter("driver"));
-			conn = DriverManager.getConnection(sc.getInitParameter("url"), sc.getInitParameter("username"),
-					sc.getInitParameter("password"));
-
+			
+			// AppInit Context에서 생성한 connection 객체
+			conn = (Connection) sc.getAttribute("conn");
+			
 			stmt = conn.prepareStatement("update members set email=?, mname=?, mod_date=now() where mno=?");
 			stmt.setString(1, req.getParameter("email"));
 			stmt.setString(2, req.getParameter("name"));

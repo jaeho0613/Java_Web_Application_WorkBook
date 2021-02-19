@@ -23,9 +23,9 @@ public class MemberDeleteServlet extends HttpServlet {
 
 		try {
 			ServletContext sc = this.getServletContext();
-			Class.forName(sc.getInitParameter("driver"));
-			conn = DriverManager.getConnection(sc.getInitParameter("url"), sc.getInitParameter("username"),
-					sc.getInitParameter("password"));
+			
+			// AppInit Context에서 생성한 connection 객체
+			conn = (Connection) sc.getAttribute("conn");
 
 			stmt = conn.prepareStatement("delete from members where mno = ?");
 			stmt.setString(1, req.getParameter("no"));
