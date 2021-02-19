@@ -11,6 +11,7 @@
     <title>회원 목록</title>
 </head>
 <body>
+	<jsp:include page="/Header.jsp"/>
     <h1>회원 목록</h1>
     <p><a href="add">신규 회원</a></p>
 <% 
@@ -25,5 +26,7 @@
 <%
 	}
 %>
+
+<jsp:include page="/Tail.jsp"/>
 </body>
 </html>
