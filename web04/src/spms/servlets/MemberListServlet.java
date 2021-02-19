@@ -24,6 +24,11 @@ public class MemberListServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		System.out.println("GET 발동");
+		
+		int a = 0;
+		
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -86,5 +91,4 @@ public class MemberListServlet extends HttpServlet {
 		}
 
 	}
-
 }
