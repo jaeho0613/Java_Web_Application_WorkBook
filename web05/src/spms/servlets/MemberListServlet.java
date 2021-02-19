@@ -6,8 +6,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import javax.servlet.GenericServlet;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
@@ -17,18 +19,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@SuppressWarnings("serial")
+import spms.vo.Member;
+
 @WebServlet("/member/list")
 public class MemberListServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		System.out.println("GET 발동");
-		
-		int a = 0;
-		
+
 		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -52,21 +52,22 @@ public class MemberListServlet extends HttpServlet {
 			rs = stmt.executeQuery("select mno, mname, email, cre_date from members order by mno asc");
 
 			response.setContentType("text/html; charset=UTF-8");
-			PrintWriter out = response.getWriter();
-			out.println("<html><head><title>회원목록</title><head>");
-			out.println("<body><h1>회원목록</h1>");
-			out.println("<p><a href='add'>신규 회원</a></p>");
+			ArrayList<Member> members = new ArrayList<Member>();
+
+			// 데이터베이스에서 회원 정보를 가져와 Member에 담는다.
+			// 그리고 Member객체를 ArrayList에 추가한다.
 			while (rs.next()) {
-				out.println(
-						rs.getInt("mno") + "," +
-						"<a href='update?no=" + rs.getInt("mno") + "'>" +
-						rs.getString("mname")
-						+ "</a>," + rs.getString("email") + "," +
-						rs.getDate("cre_date") + 
-						"<a href='delete?no=" + rs.getInt("mno") + "'> [삭제] </a>" +
-						" <br>");
+				members.add(new Member(rs.getInt("mno"), rs.getString("email"), null,
+						rs.getString("mname"), rs.getDate("cre_date"), null));
 			}
-			out.println("</body></html>");
+
+			// request에 데이터 보관
+			request.setAttribute("members", members);
+
+			// JSP로 출력을 위임
+			RequestDispatcher rd = request.getRequestDispatcher("/member/MemberList.jsp");
+			rd.include(request, response);
+
 		} catch (Exception e) {
 			throw new ServletException(e);
 		} finally {
