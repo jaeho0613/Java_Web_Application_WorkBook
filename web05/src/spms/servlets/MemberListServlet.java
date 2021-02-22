@@ -52,8 +52,12 @@ public class MemberListServlet extends HttpServlet {
 			// 데이터베이스에서 회원 정보를 가져와 Member에 담는다.
 			// 그리고 Member객체를 ArrayList에 추가한다.
 			while (rs.next()) {
-				members.add(new Member(rs.getInt("mno"), rs.getString("email"), null, rs.getString("mname"),
-						rs.getDate("cre_date"), null));
+				members.add(new Member()
+								.setMno(rs.getInt("mno"))
+								.setMname(rs.getString("mname"))
+								.setEmail(rs.getString("email"))
+								.setCre_date(rs.getDate("cre_date"))
+						);
 			}
 
 			// request에 데이터 보관

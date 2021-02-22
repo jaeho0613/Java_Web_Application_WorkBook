@@ -42,7 +42,7 @@ public class LogInServlet extends HttpServlet {
 			rs = stmt.executeQuery();
 
 			if (rs.next()) {
-				Member member = new Member(0, rs.getString("email"), null, rs.getString("mname"), null, null);
+				Member member = new Member().setEmail(rs.getString("email")).setMname(rs.getString("mname"));
 				HttpSession session = req.getSession();
 				session.setAttribute("member", member);
 

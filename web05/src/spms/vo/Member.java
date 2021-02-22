@@ -10,62 +10,50 @@ public class Member {
 	String mname;
 	Date cre_date;
 	Date mod_date;
-
-	public Member(int mno, String email, String pwd, String mname, Date cre_date, Date mod_date) {
-		super();
-		this.mno = mno;
-		this.email = email;
-		this.pwd = pwd;
-		this.mname = mname;
-		this.cre_date = cre_date;
-		this.mod_date = mod_date;
-	}
-
+	
 	public int getMno() {
 		return mno;
 	}
-
-	public void setMno(int mno) {
+	public Member setMno(int mno) {
 		this.mno = mno;
+		return this;
 	}
-
 	public String getEmail() {
 		return email;
 	}
-
-	public void setEmail(String email) {
+	public Member setEmail(String email) {
 		this.email = email;
+		return this;
 	}
-
 	public String getPwd() {
 		return pwd;
 	}
-
-	public void setPwd(String pwd) {
+	public Member setPwd(String pwd) {
 		this.pwd = pwd;
+		return this;
 	}
-
 	public String getMname() {
 		return mname;
 	}
-
-	public void setMname(String mname) {
+	public Member setMname(String mname) {
 		this.mname = mname;
+		return this;
 	}
-
 	public Date getCre_date() {
 		return cre_date;
 	}
-
-	public void setCre_date(Date cre_date) {
+	public Member setCre_date(Date cre_date) {
 		this.cre_date = cre_date;
+		return this;
 	}
-
 	public Date getMod_date() {
 		return mod_date;
 	}
-
-	public void setMod_date(Date mod_date) {
+	public Member setMod_date(Date mod_date) {
 		this.mod_date = mod_date;
+		return this;
 	}
+	
+	
+	
 }
