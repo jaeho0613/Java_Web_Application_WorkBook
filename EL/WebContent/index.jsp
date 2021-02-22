@@ -53,7 +53,7 @@
 
 
 	<p>자바빈에서 프로퍼티 email의 값 꺼내기</p>
-	\${member.email = ${member.email}
+	\${member.email} = ${member.email}
 	<br>
 
 
