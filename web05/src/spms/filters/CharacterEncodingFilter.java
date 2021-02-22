@@ -20,6 +20,7 @@ public class CharacterEncodingFilter implements Filter {
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
+		System.out.println("필더 초기화");
 		this.config = filterConfig;
 	}
 
