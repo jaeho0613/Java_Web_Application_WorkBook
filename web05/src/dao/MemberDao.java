@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.ServletContext;
+
 import spms.vo.Member;
 
 public class MemberDao {
@@ -16,6 +19,7 @@ public class MemberDao {
 		this.connection = connection;
 	}
 
+	// 회원 정보 전체 가져오기
 	public List<Member> selectList() throws Exception {
 
 		Statement stmt = null;
@@ -52,6 +56,7 @@ public class MemberDao {
 		}
 	}
 
+	// 등록하기
 	public int insert(Member member) throws Exception {
 		/* 회원등록 */
 		PreparedStatement stmt = null;
@@ -76,10 +81,7 @@ public class MemberDao {
 		}
 	}
 
-//	public int delete(int no) throws Exception {
-//		/* 회원삭제 */
-//	}
-//
+	// no로 선택하기
 	public Member selectOne(int no) throws Exception {
 		/* 회원 상세 정보 조회 */
 		Statement stmt = null;
@@ -113,6 +115,7 @@ public class MemberDao {
 		}
 	}
 
+	// 정보 수정
 	public int update(Member member) throws Exception {
 		/* 회원 정보 변경 */
 		PreparedStatement stmt = null;
@@ -136,8 +139,62 @@ public class MemberDao {
 			}
 		}
 	}
-//
-//	public Member exist(String email, String password) throws Exception {
-//		/* 있으면 Member 객체 리턴, 없으면 null 리턴 */
-//	}
+
+	// 회원 삭제
+	public int delete(int no) throws Exception {
+		/* 회원삭제 */
+		PreparedStatement stmt = null;
+
+		try {
+			stmt = connection.prepareStatement("delete from members where mno = ?");
+			stmt.setInt(1, no);
+			return stmt.executeUpdate();
+
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			try {
+				if (stmt != null) {
+					stmt.close();
+				}
+			} catch (Exception e2) {
+
+			}
+		}
+	}
+
+	// 로그인 체크
+	public Member exist(String email, String password) throws Exception {
+		/* 있으면 Member 객체 리턴, 없으면 null 리턴 */
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+
+		try {
+			stmt = connection.prepareStatement("select mname, email from members where email = ? and pwd = ?");
+			stmt.setString(1, email);
+			stmt.setString(2, password);
+			rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				return new Member().setEmail(rs.getString("email")).setMname(rs.getString("mname"));
+			} else {
+				return null;
+			}
+
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			try {
+				if (stmt != null)
+					stmt.close();
+			} catch (Exception e2) {
+			}
+			try {
+				if (rs != null)
+					rs.close();
+			} catch (Exception e2) {
+			}
+		}
+	}
+
 }

@@ -18,14 +18,12 @@ import spms.vo.Member;
 public class MemberUpdateServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		Connection conn = null;
-
 		try {
 			int no = Integer.parseInt(req.getParameter("no"));
 			ServletContext sc = this.getServletContext();
 
 			// AppInit Context에서 생성한 connection 객체
-			conn = (Connection) sc.getAttribute("conn");
+			Connection conn = (Connection) sc.getAttribute("conn");
 			MemberDao memberDao = new MemberDao();
 			memberDao.setConnectioin(conn);
 
@@ -48,15 +46,11 @@ public class MemberUpdateServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setCharacterEncoding("utf-8");
-
-		Connection conn = null;
-
 		try {
 			ServletContext sc = this.getServletContext();
 
 			// AppInit Context에서 생성한 connection 객체
-			conn = (Connection) sc.getAttribute("conn");
+			Connection conn = (Connection) sc.getAttribute("conn");
 			MemberDao memberDao = new MemberDao();
 			memberDao.setConnectioin(conn);
 			memberDao.update(new Member().setEmail(req.getParameter("email")).setMname(req.getParameter("name"))
