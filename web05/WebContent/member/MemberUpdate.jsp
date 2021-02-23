@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="spms.vo.Member"%>
 
 <!DOCTYPE html>
@@ -18,7 +17,7 @@
 		생성일: <input type="text" name="cre_date" value="${member.cre_date}" readonly /><br>
 		<input type="submit" value="변경">
 		<input type="button" value="삭제" onclick='location.href="delete?no=${member.mno}"'/>
-		<input type="button" value="뒤로가기" onclick="histroy.back()">
+		<input type="button" value="뒤로가기" onclick="history.back()">
 	</form>
 </body>
 

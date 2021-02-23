@@ -14,6 +14,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.MemberDao;
+import spms.vo.Member;
+
 @WebServlet("/member/add")
 public class MemberAddServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -27,41 +30,22 @@ public class MemberAddServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// CharacterEncodingFilter에서 처리
-		// req.setCharacterEncoding("utf-8");
-
-		Connection conn = null;
-		PreparedStatement stmt = null;
 
 		try {
 			ServletContext sc = this.getServletContext();
+			Connection conn = (Connection) sc.getAttribute("conn");
 
-			// AppInit Context에서 생성한 connection 객체
-			conn = (Connection) sc.getAttribute("conn");
+			MemberDao memberDao = new MemberDao();
+			memberDao.setConnectioin(conn);
 
-			stmt = conn.prepareStatement(
-					"insert into members(email, pwd, mname, cre_date, mod_date) values(?,?,?,now(),now())");
-			stmt.setString(1, req.getParameter("email"));
-			stmt.setString(2, req.getParameter("password"));
-			stmt.setString(3, req.getParameter("name"));
-			stmt.executeUpdate();
+			memberDao.insert(new Member().setEmail(req.getParameter("email")).setMname(req.getParameter("name"))
+					.setPwd(req.getParameter("password")));
 
 			resp.sendRedirect("list");
 		} catch (Exception e) {
 			req.setAttribute("error", e);
 			RequestDispatcher rd = req.getRequestDispatcher("/Error.jsp");
 			rd.forward(req, resp);
-		} finally {
-			try {
-				if (stmt != null)
-					stmt.close();
-			} catch (Exception e) {
-			}
-//			try {
-//				if (conn != null)
-//					conn.close();
-//			} catch (Exception e) {
-//			}
 		}
 	}
 }

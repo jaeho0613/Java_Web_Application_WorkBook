@@ -18,10 +18,11 @@
 
 	<c:forEach var="member" items="${ members }">
 	${ member.mno },
-	<a href="update?=no${ member.mno }">${ member.mname }</a>,
+	<a href="update?no=${ member.mno }">${ member.mname }</a>,
 	${ member.email },
 	${ member.cre_date }
 	<a href="delete?no=${ member.mno }">[삭제]</a>
+	<br>
 	</c:forEach>
 
 	<jsp:include page="/Tail.jsp" />
