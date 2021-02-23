@@ -27,7 +27,3 @@ insert into members(email, pwd, mname, cre_date, mod_date) values('s2@testcom', 
 insert into members(email, pwd, mname, cre_date, mod_date) values('s3@testcom', '1111', '일지매', now(), now());
 insert into members(email, pwd, mname, cre_date, mod_date) values('s4@testcom', '1111', '이몽룡', now(), now());
 insert into members(email, pwd, mname, cre_date, mod_date) values('s5@testcom', '1111', '성춘향', now(), now());
-
-select mno, email, mname, cre_date
-from members
-order by mno asc;
