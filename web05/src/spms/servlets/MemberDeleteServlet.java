@@ -22,9 +22,7 @@ public class MemberDeleteServlet extends HttpServlet {
 			ServletContext sc = this.getServletContext();
 
 			// AppInit Context에서 생성한 connection 객체
-			Connection conn = (Connection) sc.getAttribute("conn");
-			MemberDao memberDao = new MemberDao();
-			memberDao.setConnectioin(conn);
+			MemberDao memberDao = (MemberDao) sc.getAttribute("memberDao");
 			memberDao.delete(Integer.parseInt(req.getParameter("no")));
 
 			resp.sendRedirect("list");

@@ -33,10 +33,9 @@ public class MemberListServlet extends HttpServlet {
 		try {
 			// 컨텍스트 초기화 변수
 			ServletContext sc = this.getServletContext();
-			Connection conn = (Connection) sc.getAttribute("conn");
-
-			MemberDao memberDao = new MemberDao();
-			memberDao.setConnectioin(conn);
+			
+			// Attribute에서 가져오기
+			MemberDao memberDao = (MemberDao) sc.getAttribute("memberDao");
 
 			// request에 데이터 보관
 			request.setAttribute("members", memberDao.selectList());
