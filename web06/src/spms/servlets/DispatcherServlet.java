@@ -20,6 +20,7 @@ public class DispatcherServlet extends HttpServlet {
 		response.setContentType("text/html; charset=UTF-8");
 
 		String servletPath = request.getServletPath();
+		System.out.println("servletPath: " + servletPath);
 		try {
 			String pageControllerPath = null;
 

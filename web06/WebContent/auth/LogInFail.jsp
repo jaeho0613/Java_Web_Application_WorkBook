@@ -5,7 +5,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <meta http-equiv="refresh" content="1; url=login">
+    <meta http-equiv="refresh" content="1; url=login.do">
     <meta charset="UTF-8">
     <title>로그이 실패</title>
 </head>
