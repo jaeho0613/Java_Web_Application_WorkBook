@@ -1,6 +1,6 @@
--- drop database web05;
-create database web05;
-use web05;
+drop database web06;
+create database web06;
+use web06;
 
 -- members 테이블
 CREATE TABLE members (
