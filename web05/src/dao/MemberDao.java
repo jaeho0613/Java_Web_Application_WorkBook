@@ -7,23 +7,16 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.ServletContext;
+import javax.sql.DataSource;
 
 import spms.vo.Member;
-import util.DBConnectionPool;
 
 public class MemberDao {
-	/*
-	 * Connection connection;
-	 * 
-	 * // 의존성 주입 public void setConnectioin(Connection connection) { this.connection
-	 * = connection; }
-	 */
 
-	DBConnectionPool connPool;
+	DataSource ds;
 
-	public void setDbConnectionPool(DBConnectionPool connPool) {
-		this.connPool = connPool;
+	public void setDataSource(DataSource ds) {
+		this.ds = ds;
 	}
 
 	// 회원 정보 전체 가져오기
@@ -33,7 +26,7 @@ public class MemberDao {
 		ResultSet rs = null;
 
 		try {
-			conn = connPool.getConnection();
+			conn = ds.getConnection();
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery("select mno, mname, email, cre_date from members order by mno asc");
 
@@ -63,7 +56,7 @@ public class MemberDao {
 			}
 			try {
 				if (conn != null) {
-					connPool.returnConnection(conn);
+					conn.close();
 				}
 			} catch (Exception e2) {
 
@@ -77,7 +70,7 @@ public class MemberDao {
 		PreparedStatement stmt = null;
 		Connection conn = null;
 		try {
-			conn = connPool.getConnection();
+			conn = ds.getConnection();
 			stmt = conn.prepareStatement(
 					"insert into members(email, pwd, mname, cre_date, mod_date) values(?,?,?,now(),now())");
 
@@ -97,7 +90,7 @@ public class MemberDao {
 			}
 			try {
 				if (conn != null) {
-					connPool.returnConnection(conn);
+					conn.close();
 				}
 			} catch (Exception e2) {
 
@@ -113,7 +106,7 @@ public class MemberDao {
 		ResultSet rs = null;
 
 		try {
-			conn = connPool.getConnection();
+			conn = ds.getConnection();
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery("select mno, email, mname, cre_date from members where mno=" + no);
 			rs.next();
@@ -140,7 +133,7 @@ public class MemberDao {
 			}
 			try {
 				if (conn != null) {
-					connPool.returnConnection(conn);
+					conn.close();
 				}
 			} catch (Exception e2) {
 
@@ -155,7 +148,8 @@ public class MemberDao {
 		Connection conn = null;
 
 		try {
-			conn = connPool.getConnection();
+			// conn = connPool.getConnection();
+			conn = ds.getConnection();
 			stmt = conn.prepareStatement("update members set email=?, mname=?, mod_date=now() where mno=?");
 			stmt.setString(1, member.getEmail());
 			stmt.setString(2, member.getMname());
@@ -173,7 +167,7 @@ public class MemberDao {
 			}
 			try {
 				if (conn != null) {
-					connPool.returnConnection(conn);
+					conn.close();
 				}
 			} catch (Exception e2) {
 
@@ -188,7 +182,8 @@ public class MemberDao {
 		Connection conn = null;
 
 		try {
-			conn = connPool.getConnection();
+			// conn = connPool.getConnection();
+			conn = ds.getConnection();
 			stmt = conn.prepareStatement("delete from members where mno = ?");
 			stmt.setInt(1, no);
 			return stmt.executeUpdate();
@@ -205,7 +200,7 @@ public class MemberDao {
 			}
 			try {
 				if (conn != null) {
-					connPool.returnConnection(conn);
+					conn.close();
 				}
 			} catch (Exception e2) {
 
@@ -221,7 +216,8 @@ public class MemberDao {
 		ResultSet rs = null;
 
 		try {
-			conn = connPool.getConnection();
+			// conn = connPool.getConnection();
+			conn = ds.getConnection();
 			stmt = conn.prepareStatement("select mname, email from members where email = ? and pwd = ?");
 			stmt.setString(1, email);
 			stmt.setString(2, password);
@@ -248,7 +244,7 @@ public class MemberDao {
 			}
 			try {
 				if (conn != null) {
-					connPool.returnConnection(conn);
+					conn.close();
 				}
 			} catch (Exception e2) {
 
