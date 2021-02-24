@@ -29,26 +29,18 @@ public class MemberListServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		try {
 			// 컨텍스트 초기화 변수
 			ServletContext sc = this.getServletContext();
-			
+
 			// Attribute에서 가져오기
 			MemberDao memberDao = (MemberDao) sc.getAttribute("memberDao");
 
 			// request에 데이터 보관
 			request.setAttribute("members", memberDao.selectList());
-
-			// JSP로 출력을 위임
-			response.setContentType("text/html; charset=utf-8");
-			RequestDispatcher rd = request.getRequestDispatcher("/member/MemberList.jsp");
-			rd.include(request, response);
-
+			request.setAttribute("viewUrl", "/member/MemberList.jsp");
 		} catch (Exception e) {
-			request.setAttribute("error", e);
-			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
-			rd.forward(request, response);
+			throw new ServletException(e);
 		}
 	}
 }
