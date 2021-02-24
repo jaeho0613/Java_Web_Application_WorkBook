@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="spms.vo.Member"%>
 
 <!DOCTYPE html>
 <html>
@@ -10,7 +9,7 @@
 </head>
 
 <body>
-	<form action="update" method="post">
+	<form action="update.do" method="post">
 		번호: <input type="text" name="no" value="${member.mno}" readonly /><br>
 		이름: <input type="text" name="name" value="${member.mname }" /><br>
 		이메일: <input type="text" name="email" value="${member.email}" /><br>

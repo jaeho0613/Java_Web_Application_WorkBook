@@ -1,8 +1,6 @@
 package spms.servlets;
 
 import java.io.IOException;
-import java.sql.Connection;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,23 +20,15 @@ public class MemberUpdateServlet extends HttpServlet {
 			int no = Integer.parseInt(req.getParameter("no"));
 			ServletContext sc = this.getServletContext();
 
-			// AppInit Context에서 생성한 connection 객체
 			MemberDao memberDao = (MemberDao) sc.getAttribute("memberDao");
 
 			Member member = memberDao.selectOne(no);
 
 			req.setAttribute("member", member);
-
-			resp.setContentType("text/html; charset=utf-8");
-
-			RequestDispatcher rd = req.getRequestDispatcher("/member/MemberUpdate.jsp");
-			rd.include(req, resp);
+			req.setAttribute("viewUrl", "/member/MemberUpdate.jsp");
 
 		} catch (Exception e) {
-			// System.out.println("MemberUpdateServlet : doGet오류");
-			req.setAttribute("error", e);
-			RequestDispatcher rd = req.getRequestDispatcher("/Error.jsp");
-			rd.forward(req, resp);
+			throw new ServletException(e);
 		}
 	}
 
@@ -49,15 +39,14 @@ public class MemberUpdateServlet extends HttpServlet {
 
 			// AppInit Context에서 생성한 connection 객체
 			MemberDao memberDao = (MemberDao) sc.getAttribute("memberDao");
-			memberDao.update(new Member().setEmail(req.getParameter("email")).setMname(req.getParameter("name"))
-					.setMno(Integer.parseInt(req.getParameter("no"))));
+			Member member = (Member) req.getAttribute("member");
 
-			resp.sendRedirect("list");
+			memberDao.update(member);
+
+			req.setAttribute("viewUrl", "redirect:list.do");
 
 		} catch (Exception e) {
-			req.setAttribute("error", e);
-			RequestDispatcher rd = req.getRequestDispatcher("/Error.jsp");
-			rd.forward(req, resp);
+			throw new ServletException(e);
 		}
 	}
 }
