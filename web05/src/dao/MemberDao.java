@@ -10,23 +10,31 @@ import java.util.List;
 import javax.servlet.ServletContext;
 
 import spms.vo.Member;
+import util.DBConnectionPool;
 
 public class MemberDao {
-	Connection connection;
+	/*
+	 * Connection connection;
+	 * 
+	 * // 의존성 주입 public void setConnectioin(Connection connection) { this.connection
+	 * = connection; }
+	 */
 
-	// 의존성 주입
-	public void setConnectioin(Connection connection) {
-		this.connection = connection;
+	DBConnectionPool connPool;
+
+	public void setDbConnectionPool(DBConnectionPool connPool) {
+		this.connPool = connPool;
 	}
 
 	// 회원 정보 전체 가져오기
 	public List<Member> selectList() throws Exception {
-
+		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
 
 		try {
-			stmt = connection.createStatement();
+			conn = connPool.getConnection();
+			stmt = conn.createStatement();
 			rs = stmt.executeQuery("select mno, mname, email, cre_date from members order by mno asc");
 
 			ArrayList<Member> members = new ArrayList<Member>();
@@ -53,6 +61,13 @@ public class MemberDao {
 			} catch (Exception e2) {
 
 			}
+			try {
+				if (conn != null) {
+					connPool.returnConnection(conn);
+				}
+			} catch (Exception e2) {
+
+			}
 		}
 	}
 
@@ -60,8 +75,10 @@ public class MemberDao {
 	public int insert(Member member) throws Exception {
 		/* 회원등록 */
 		PreparedStatement stmt = null;
+		Connection conn = null;
 		try {
-			stmt = connection.prepareStatement(
+			conn = connPool.getConnection();
+			stmt = conn.prepareStatement(
 					"insert into members(email, pwd, mname, cre_date, mod_date) values(?,?,?,now(),now())");
 
 			stmt.setString(1, member.getEmail());
@@ -78,17 +95,26 @@ public class MemberDao {
 			} catch (Exception e2) {
 
 			}
+			try {
+				if (conn != null) {
+					connPool.returnConnection(conn);
+				}
+			} catch (Exception e2) {
+
+			}
 		}
 	}
 
 	// no로 선택하기
 	public Member selectOne(int no) throws Exception {
 		/* 회원 상세 정보 조회 */
+		Connection conn = null;
 		Statement stmt = null;
 		ResultSet rs = null;
 
 		try {
-			stmt = connection.createStatement();
+			conn = connPool.getConnection();
+			stmt = conn.createStatement();
 			rs = stmt.executeQuery("select mno, email, mname, cre_date from members where mno=" + no);
 			rs.next();
 
@@ -112,6 +138,13 @@ public class MemberDao {
 				}
 			} catch (Exception e2) {
 			}
+			try {
+				if (conn != null) {
+					connPool.returnConnection(conn);
+				}
+			} catch (Exception e2) {
+
+			}
 		}
 	}
 
@@ -119,10 +152,11 @@ public class MemberDao {
 	public int update(Member member) throws Exception {
 		/* 회원 정보 변경 */
 		PreparedStatement stmt = null;
+		Connection conn = null;
 
 		try {
-			System.out.println("update!");
-			stmt = connection.prepareStatement("update members set email=?, mname=?, mod_date=now() where mno=?");
+			conn = connPool.getConnection();
+			stmt = conn.prepareStatement("update members set email=?, mname=?, mod_date=now() where mno=?");
 			stmt.setString(1, member.getEmail());
 			stmt.setString(2, member.getMname());
 			stmt.setInt(3, member.getMno());
@@ -137,6 +171,13 @@ public class MemberDao {
 				}
 			} catch (Exception e2) {
 			}
+			try {
+				if (conn != null) {
+					connPool.returnConnection(conn);
+				}
+			} catch (Exception e2) {
+
+			}
 		}
 	}
 
@@ -144,9 +185,11 @@ public class MemberDao {
 	public int delete(int no) throws Exception {
 		/* 회원삭제 */
 		PreparedStatement stmt = null;
+		Connection conn = null;
 
 		try {
-			stmt = connection.prepareStatement("delete from members where mno = ?");
+			conn = connPool.getConnection();
+			stmt = conn.prepareStatement("delete from members where mno = ?");
 			stmt.setInt(1, no);
 			return stmt.executeUpdate();
 
@@ -160,17 +203,26 @@ public class MemberDao {
 			} catch (Exception e2) {
 
 			}
+			try {
+				if (conn != null) {
+					connPool.returnConnection(conn);
+				}
+			} catch (Exception e2) {
+
+			}
 		}
 	}
 
 	// 로그인 체크
 	public Member exist(String email, String password) throws Exception {
 		/* 있으면 Member 객체 리턴, 없으면 null 리턴 */
+		Connection conn = null;
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
 
 		try {
-			stmt = connection.prepareStatement("select mname, email from members where email = ? and pwd = ?");
+			conn = connPool.getConnection();
+			stmt = conn.prepareStatement("select mname, email from members where email = ? and pwd = ?");
 			stmt.setString(1, email);
 			stmt.setString(2, password);
 			rs = stmt.executeQuery();
@@ -193,6 +245,13 @@ public class MemberDao {
 				if (rs != null)
 					rs.close();
 			} catch (Exception e2) {
+			}
+			try {
+				if (conn != null) {
+					connPool.returnConnection(conn);
+				}
+			} catch (Exception e2) {
+
 			}
 		}
 	}
