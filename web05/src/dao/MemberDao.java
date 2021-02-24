@@ -148,7 +148,6 @@ public class MemberDao {
 		Connection conn = null;
 
 		try {
-			// conn = connPool.getConnection();
 			conn = ds.getConnection();
 			stmt = conn.prepareStatement("update members set email=?, mname=?, mod_date=now() where mno=?");
 			stmt.setString(1, member.getEmail());
@@ -182,7 +181,6 @@ public class MemberDao {
 		Connection conn = null;
 
 		try {
-			// conn = connPool.getConnection();
 			conn = ds.getConnection();
 			stmt = conn.prepareStatement("delete from members where mno = ?");
 			stmt.setInt(1, no);
