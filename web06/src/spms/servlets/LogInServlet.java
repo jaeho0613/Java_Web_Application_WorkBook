@@ -1,7 +1,6 @@
 package spms.servlets;
 
 import java.io.IOException;
-import java.sql.Connection;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -11,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import dao.MemberDao;
+import spms.dao.MemberDao;
 import spms.vo.Member;
 
 @WebServlet("/auth/login")
@@ -35,7 +34,7 @@ public class LogInServlet extends HttpServlet {
 				HttpSession session = req.getSession();
 				session.setAttribute("member", member);
 
-				req.setAttribute("viewUrl", "redirect:/web06/member/list.do");
+				req.setAttribute("viewUrl", "redirect:../member/list.do");
 			} else {
 				RequestDispatcher rd = req.getRequestDispatcher("/auth/LogInFail.jsp");
 				rd.forward(req, resp);

@@ -1,4 +1,4 @@
-package listeners;
+package spms.listeners;
 
 import javax.naming.InitialContext;
 import javax.servlet.ServletContext;
@@ -6,7 +6,8 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import javax.sql.DataSource;
-import dao.MemberDao;
+
+import spms.dao.MemberDao;
 
 @WebListener
 public class ContextLoaderListener implements ServletContextListener {
