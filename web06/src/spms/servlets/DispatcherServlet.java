@@ -33,48 +33,46 @@ public class DispatcherServlet extends HttpServlet {
 			ServletContext sc = this.getServletContext();
 
 			HashMap<String, Object> model = new HashMap<String, Object>();
-			model.put("memberDao", sc.getAttribute("memberDao"));
 			model.put("session", request.getSession());
 
-			Controller pageController = null;
+			Controller pageController = (Controller) sc.getAttribute(servletPath);
 
 			switch (servletPath) {
-			case "/member/list.do":
-				pageController = new MemberListController();
-				break;
+			
+			// 추가
 			case "/member/add.do":
-				pageController = new MemberAddController();
-
 				if (request.getParameter("email") != null) {
-					model.put("member", new Member().setEmail(request.getParameter("email"))
-							.setPwd(request.getParameter("password")).setMname(request.getParameter("name")));
+					model.put("member", new Member()
+							.setEmail(request.getParameter("email"))
+							.setPwd(request.getParameter("password"))
+							.setMname(request.getParameter("name")));
 				}
 				break;
+				
+			// 수정
 			case "/member/update.do":
-				pageController = new MemberUpdateController();
-
 				if (request.getParameter("email") != null) {
-					model.put("member", new Member().setMno(Integer.parseInt(request.getParameter("no")))
-							.setEmail(request.getParameter("email")).setMname(request.getParameter("name")));
+					model.put("member", new Member()
+							.setMno(Integer.parseInt(request.getParameter("no")))
+							.setEmail(request.getParameter("email"))
+							.setMname(request.getParameter("name")));
 				} else {
 					model.put("no", Integer.parseInt(request.getParameter("no")));
 				}
 				break;
+				
+			// 삭제
 			case "/member/delete.do":
-				pageController = new MemberDeleteController();
-
 				model.put("no", Integer.parseInt(request.getParameter("no")));
 				break;
+				
+			// 로그인
 			case "/auth/login.do":
-				pageController = new LogInController();
-
 				if (request.getParameter("email") != null && request.getParameter("password") != null) {
-					model.put("info", new Member().setEmail(request.getParameter("email"))
+					model.put("info", new Member()
+							.setEmail(request.getParameter("email"))
 							.setPwd(request.getParameter("password")));
 				}
-				break;
-			case "/auth/logout.do":
-				pageController = new LogOutController();
 				break;
 			}
 
