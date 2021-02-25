@@ -4,23 +4,28 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import spms.bind.DataBinding;
+import spms.dao.MemberDao;
 import spms.dao.MySqlMemberDao;
 import spms.vo.Member;
 
-public class LogInController implements Controller {
+public class LogInController implements Controller, DataBinding {
 
-	MySqlMemberDao memberDao;
+	MemberDao memberDao;
 
-	public LogInController setMemberDao(MySqlMemberDao memberDao) {
+	public LogInController setMemberDao(MemberDao memberDao) {
 		this.memberDao = memberDao;
 		return this;
 	}
 
 	@Override
 	public String execute(Map<String, Object> model) throws Exception {
-		if (model.get("info") != null) {
-			Member memberInfo = (Member) model.get("info");
+		Member memberInfo = (Member) model.get("memberInfo");
 
+		if (memberInfo.getEmail() == null) { // 입력폼을 요청할 때
+			return "/auth/LogInForm.jsp";
+
+		} else { // 회원 등록을 요청할 때
 			Member member = memberDao.exist(memberInfo.getEmail(), memberInfo.getPwd());
 
 			if (member != null) {
@@ -30,8 +35,11 @@ public class LogInController implements Controller {
 			} else {
 				return "/auth/LogInFail.jsp";
 			}
-		} else {
-			return "/auth/LogInForm.jsp";
 		}
+	}
+
+	@Override
+	public Object[] getDataBinders() {
+		return new Object[] { "memberInfo", spms.vo.Member.class };
 	}
 }

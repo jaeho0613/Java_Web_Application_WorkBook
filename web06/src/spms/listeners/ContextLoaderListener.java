@@ -37,7 +37,7 @@ public class ContextLoaderListener implements ServletContextListener {
 			sc.setAttribute("/member/add.do", new MemberAddController().setMemberDao(memberDao));
 			sc.setAttribute("/member/update.do", new MemberUpdateController().setMemberDao(memberDao));
 			sc.setAttribute("/member/delete.do", new MemberDeleteController().setMemberDao(memberDao));
-
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -9,14 +9,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import spms.bind.DataBinding;
+import spms.bind.ServletRequestDataBinder;
 import spms.controls.Controller;
-import spms.controls.LogInController;
-import spms.controls.LogOutController;
-import spms.controls.MemberAddController;
-import spms.controls.MemberDeleteController;
-import spms.controls.MemberListController;
-import spms.controls.MemberUpdateController;
-import spms.vo.Member;
 
 @WebServlet("*.do")
 public class DispatcherServlet extends HttpServlet {
@@ -37,56 +33,21 @@ public class DispatcherServlet extends HttpServlet {
 
 			Controller pageController = (Controller) sc.getAttribute(servletPath);
 
-			switch (servletPath) {
-			
-			// 추가
-			case "/member/add.do":
-				if (request.getParameter("email") != null) {
-					model.put("member", new Member()
-							.setEmail(request.getParameter("email"))
-							.setPwd(request.getParameter("password"))
-							.setMname(request.getParameter("name")));
-				}
-				break;
-				
-			// 수정
-			case "/member/update.do":
-				if (request.getParameter("email") != null) {
-					model.put("member", new Member()
-							.setMno(Integer.parseInt(request.getParameter("no")))
-							.setEmail(request.getParameter("email"))
-							.setMname(request.getParameter("name")));
-				} else {
-					model.put("no", Integer.parseInt(request.getParameter("no")));
-				}
-				break;
-				
-			// 삭제
-			case "/member/delete.do":
-				model.put("no", Integer.parseInt(request.getParameter("no")));
-				break;
-				
-			// 로그인
-			case "/auth/login.do":
-				if (request.getParameter("email") != null && request.getParameter("password") != null) {
-					model.put("info", new Member()
-							.setEmail(request.getParameter("email"))
-							.setPwd(request.getParameter("password")));
-				}
-				break;
+			if (pageController instanceof DataBinding) {
+				System.out.println("instanceOf!");
+				prepareRequestData(request, model, (DataBinding) pageController);
 			}
 
 			String viewUrl = pageController.execute(model);
 
 			for (String key : model.keySet()) {
-				System.out.println("key : " + key);
+				System.out.println("Key : " + key);
 				request.setAttribute(key, model.get(key));
 			}
 
 			if (viewUrl.startsWith("redirect:")) {
 				response.sendRedirect(viewUrl.substring(9));
 				return;
-
 			} else {
 				RequestDispatcher rd = request.getRequestDispatcher(viewUrl);
 				rd.include(request, response);
@@ -97,6 +58,20 @@ public class DispatcherServlet extends HttpServlet {
 			request.setAttribute("error", e);
 			RequestDispatcher rd = request.getRequestDispatcher("/Error.jsp");
 			rd.forward(request, response);
+		}
+	}
+
+	private void prepareRequestData(HttpServletRequest request, HashMap<String, Object> model,
+			DataBinding dataBinding) throws Exception {
+		Object[] dataBinders = dataBinding.getDataBinders();
+		String dataName = null;
+		Class<?> dataType = null;
+		Object dataObj = null;
+		for (int i = 0; i < dataBinders.length; i += 2) {
+			dataName = (String) dataBinders[i];
+			dataType = (Class<?>) dataBinders[i + 1];
+			dataObj = ServletRequestDataBinder.bind(request, dataType, dataName);
+			model.put(dataName, dataObj);
 		}
 	}
 }
