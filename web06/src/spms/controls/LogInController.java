@@ -4,14 +4,14 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import spms.dao.MemberDao;
+import spms.dao.MySqlMemberDao;
 import spms.vo.Member;
 
 public class LogInController implements Controller {
 
-	MemberDao memberDao;
+	MySqlMemberDao memberDao;
 
-	public LogInController setMemberDao(MemberDao memberDao) {
+	public LogInController setMemberDao(MySqlMemberDao memberDao) {
 		this.memberDao = memberDao;
 		return this;
 	}
