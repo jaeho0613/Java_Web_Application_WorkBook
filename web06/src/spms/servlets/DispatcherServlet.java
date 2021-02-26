@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import spms.bind.DataBinding;
 import spms.bind.ServletRequestDataBinder;
+import spms.context.ApplicationContext;
 import spms.controls.Controller;
+import spms.listeners.ContextLoaderListener;
 
 @WebServlet("*.do")
 public class DispatcherServlet extends HttpServlet {
@@ -28,15 +30,19 @@ public class DispatcherServlet extends HttpServlet {
 		System.out.println("servletPath: " + servletPath);
 		try {
 			// 
-			ServletContext sc = this.getServletContext();
+			// ServletContext sc = this.getServletContext();
+			ApplicationContext ctx = ContextLoaderListener.getApplicationContext();
 
 			HashMap<String, Object> model = new HashMap<String, Object>();
 			model.put("session", request.getSession());
 
-			Controller pageController = (Controller) sc.getAttribute(servletPath);
+			// Controller pageController = (Controller) sc.getAttribute(servletPath);
+			Controller pageController = (Controller) ctx.getBean(servletPath);
+			if(pageController == null) {
+				throw new Exception("요청한 서비스를 찾을 수 없습니다.");
+			}
 
 			if (pageController instanceof DataBinding) {
-				System.out.println("instanceOf!");
 				prepareRequestData(request, model, (DataBinding) pageController);
 			}
 
