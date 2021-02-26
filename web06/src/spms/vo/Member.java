@@ -3,19 +3,25 @@ package spms.vo;
 import java.util.Date;
 
 public class Member {
-
-	int mno; // Primary Key, Auto_increment
-	String email;
-	String pwd;
-	String mname;
-	Date cre_date;
-	Date mod_date;
+	protected int 		no;
+	protected String 	name;
+	protected String 	email;
+	protected String 	password;
+	protected Date		createdDate;
+	protected Date		modifiedDate;
 	
-	public int getMno() {
-		return mno;
+	public int getNo() {
+		return no;
 	}
-	public Member setMno(int mno) {
-		this.mno = mno;
+	public Member setNo(int no) {
+		this.no = no;
+		return this;
+	}
+	public String getName() {
+		return name;
+	}
+	public Member setName(String name) {
+		this.name = name;
 		return this;
 	}
 	public String getEmail() {
@@ -25,35 +31,25 @@ public class Member {
 		this.email = email;
 		return this;
 	}
-	public String getPwd() {
-		return pwd;
+	public String getPassword() {
+		return password;
 	}
-	public Member setPwd(String pwd) {
-		this.pwd = pwd;
+	public Member setPassword(String password) {
+		this.password = password;
 		return this;
 	}
-	public String getMname() {
-		return mname;
+	public Date getCreatedDate() {
+		return createdDate;
 	}
-	public Member setMname(String mname) {
-		this.mname = mname;
+	public Member setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
 		return this;
 	}
-	public Date getCre_date() {
-		return cre_date;
+	public Date getModifiedDate() {
+		return modifiedDate;
 	}
-	public Member setCre_date(Date cre_date) {
-		this.cre_date = cre_date;
+	public Member setModifiedDate(Date modifiedDate) {
+		this.modifiedDate = modifiedDate;
 		return this;
 	}
-	public Date getMod_date() {
-		return mod_date;
-	}
-	public Member setMod_date(Date mod_date) {
-		this.mod_date = mod_date;
-		return this;
-	}
-	
-	
-	
 }

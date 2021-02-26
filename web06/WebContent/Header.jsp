@@ -6,7 +6,7 @@
 	style="background-color: #00008b; color: #ffff; height: 20px; padding: 5px;">
 	SPMS (Simple Project Management System)
 	<c:if test="${!empty sessionScope.member }">
-		<span style="float: right;"> ${ sessionScope.member.mname } 
+		<span style="float: right;"> ${ sessionScope.member.name } 
 			<a style="color: white;" href="<%=request.getContextPath()%>/auth/logout.do">로그아웃</a>
 		</span>
 	</c:if>

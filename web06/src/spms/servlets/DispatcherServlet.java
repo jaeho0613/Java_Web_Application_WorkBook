@@ -23,9 +23,11 @@ public class DispatcherServlet extends HttpServlet {
 			throws ServletException, IOException {
 		response.setContentType("text/html; charset=UTF-8");
 
+		// 실행 경로 가져오기
 		String servletPath = request.getServletPath();
 		System.out.println("servletPath: " + servletPath);
 		try {
+			// 
 			ServletContext sc = this.getServletContext();
 
 			HashMap<String, Object> model = new HashMap<String, Object>();

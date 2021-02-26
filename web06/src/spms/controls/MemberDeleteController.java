@@ -25,7 +25,6 @@ public class MemberDeleteController implements Controller, DataBinding {
 	public Object[] getDataBinders() {
 		return new Object[] {
 				"no", Integer.class,
-				"member", spms.vo.Member.class
 		};
 	}
 }
